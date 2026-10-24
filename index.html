@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>四年路线图 · 大学生成长路径规划器</title>
+<style>
+:root{
+  --bg:#F6F1E6;        /* 浅米色底 */
+  --bg2:#FFFDF8;
+  --card:#FFFFFF;
+  --line:#E7DFCE;
+  --line2:#D8CDB6;
+  --txt:#25332C;
+  --dim:#6E7A73;
+  --dim2:#98A29B;
+  --grn:#1F4E3D;       /* 深绿主色 */
+  --grn2:#2E6B54;
+  --grnS:#E8F0E9;
+  --grnLine:#C6D9CA;
+  --clay:#A9673C;      /* 暖陶土点缀 */
+  --clayS:#F7EBE1;
+  --mono:Consolas,"SFMono-Regular",Menlo,"Courier New",monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);
+  font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+  font-size:14px;line-height:1.75;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(rgba(31,78,61,.045) 1px,transparent 1px);
+  background-size:26px 26px}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 20px 72px}
+a{color:var(--grn2)}
+button{font-family:inherit;font-size:13px;color:var(--txt);cursor:pointer;
+  background:var(--card);border:1px solid var(--line2);border-radius:8px;padding:7px 14px;transition:.16s}
+button:hover{border-color:var(--grn);color:var(--grn)}
+button.primary{background:var(--grn);border-color:var(--grn);color:#F6F1E6;font-weight:600}
+button.primary:hover{background:var(--grn2);color:#fff}
+button.ghost{background:transparent;border-color:var(--line2);color:var(--dim)}
+button.sm{padding:4px 10px;font-size:12px;border-radius:7px}
+.mono{font-family:var(--mono)}
+
+/* ---- 顶部 ---- */
+header{position:sticky;top:0;z-index:30;background:rgba(246,241,230,.93);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hd{max-width:1180px;margin:0 auto;padding:12px 20px 10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{display:flex;align-items:baseline;gap:10px}
+.logo h1{margin:0;font-size:18px;letter-spacing:1px;color:var(--grn)}
+.logo .en{font-family:var(--mono);font-size:10.5px;letter-spacing:3px;color:var(--dim2)}
+.hd .sp{flex:1}
+.stepbar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim)}
+.pill{font-family:var(--mono);font-size:11px;border:1px solid var(--line2);border-radius:20px;padding:3px 10px;background:var(--card)}
+.pill.on{border-color:var(--grn);color:var(--grn);background:var(--grnS)}
+.topbar-progress{height:3px;background:transparent}
+.topbar-progress i{display:block;height:100%;background:var(--grn);width:0;transition:width .3s}
+
+/* ---- hero ---- */
+.hero{padding:34px 0 8px}
+.hero h2{margin:0 0 8px;font-size:26px;line-height:1.45;color:var(--grn);letter-spacing:.5px;font-weight:700}
+.hero p{margin:0;color:var(--dim);max-width:760px}
+.pledge{margin:18px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.pledge div{background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--grn);
+  border-radius:8px;padding:9px 12px;font-size:12.5px;color:var(--dim)}
+.pledge div b{color:var(--grn);font-weight:600}
+
+/* ---- section ---- */
+section{margin-top:34px;scroll-margin-top:78px}
+.sec-h{display:flex;align-items:baseline;gap:10px;margin:0 0 6px}
+.sec-h .no{font-family:var(--mono);font-size:12px;color:var(--clay);letter-spacing:1px}
+.sec-h h3{margin:0;font-size:17px;color:var(--txt);letter-spacing:.5px}
+.sec-h .en{font-family:var(--mono);font-size:10.5px;color:var(--dim2);letter-spacing:2px}
+.sec-sub{margin:0 0 16px;font-size:12.5px;color:var(--dim)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
+.note{font-size:12px;color:var(--dim);background:var(--bg2);border:1px dashed var(--line2);
+  border-radius:8px;padding:9px 12px;margin-top:12px}
+
+/* ---- 问卷 ---- */
+.qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:12px}
+.q{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.q .qt{font-size:13.5px;font-weight:600;margin-bottom:2px;display:flex;gap:7px;align-items:baseline}
+.q .qt i{font-family:var(--mono);font-style:normal;font-size:11px;color:var(--clay)}
+.q .qh{font-size:11.5px;color:var(--dim2);margin-bottom:9px}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opt{border:1px solid var(--line2);background:var(--card);border-radius:20px;padding:4px 12px;
+  font-size:12.5px;color:var(--dim);cursor:pointer;transition:.15s;user-select:none}
+.opt:hover{border-color:var(--grn2);color:var(--grn)}
+.opt.on{background:var(--grn);border-color:var(--grn);color:#F6F1E6}
+.opt.on::before{content:"✓ ";font-size:11px}
+.genbar{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+.genbar .tip{font-size:12px;color:var(--dim2)}
+
+/* ---- 结果 ---- */
+.res-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.trackchip{border:1px solid var(--grn);background:var(--grnS);color:var(--grn);border-radius:20px;
+  padding:4px 14px;font-size:13px;font-weight:600}
+.trackchip.alt{background:var(--clayS);border-color:var(--clay);color:var(--clay);font-weight:500}
+.switch{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.assetgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.asset{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.asset .an{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;font-weight:600}
+.asset .an small{font-family:var(--mono);font-size:10.5px;color:var(--dim2);font-weight:400}
+.bar{height:8px;background:#EFE9DA;border-radius:6px;overflow:hidden;margin:9px 0 7px;position:relative}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--grn2),var(--grn));border-radius:6px;transition:width .5s}
+.bar em{position:absolute;right:0;top:-3px;bottom:-3px;width:2px;background:var(--clay);opacity:.55}
+.asset .av{font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.asset .av b{color:var(--grn);font-weight:600}
+
+/* 对标 */
+.bench{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:14px}
+.bench .scale{position:relative;height:34px;margin:14px 0 6px}
+.bench .scale .track{position:absolute;left:0;right:0;top:12px;height:10px;border-radius:6px;
+  background:linear-gradient(90deg,#EFE9DA,#DCE7DC)}
+.bench .scale .fill{position:absolute;left:0;top:12px;height:10px;border-radius:6px;background:var(--grn);opacity:.85}
+.bench .scale .pin{position:absolute;top:0;transform:translateX(-50%);text-align:center}
+.bench .scale .pin b{display:block;background:var(--grn);color:#F6F1E6;border-radius:6px;padding:1px 7px;font-size:11.5px;font-family:var(--mono)}
+.bench .scale .pin span{font-size:11px;color:var(--dim)}
+.bench .ticks{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--dim2)}
+.caliber{font-family:var(--mono);font-size:11px;color:var(--dim);background:var(--card);
+  border:1px dashed var(--line2);border-radius:7px;padding:7px 10px;margin-top:10px;line-height:1.7}
+
+/* 节点 */
+.nodes{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:12px}
+.node{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.node.pass{opacity:.62}
+.node .nd{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.node .nd b{font-size:13.5px}
+.node .nd .cd{font-family:var(--mono);font-size:12px;color:var(--grn);white-space:nowrap}
+.node .nd .cd span{font-size:10px;color:var(--dim2)}
+.node .dt{font-family:var(--mono);font-size:11px;color:var(--dim2)}
+.mats{list-style:none;margin:10px 0 0;padding:0}
+.mats li{font-size:12.5px;color:var(--dim);display:flex;gap:7px;align-items:flex-start;padding:2px 0;cursor:pointer}
+.mats li .box{width:14px;height:14px;flex:0 0 14px;border:1px solid var(--line2);border-radius:4px;
+  margin-top:4px;background:var(--card);position:relative}
+.mats li.done{color:var(--dim2);text-decoration:line-through;text-decoration-color:var(--grnLine)}
+.mats li.done .box{background:var(--grn);border-color:var(--grn)}
+.mats li.done .box::after{content:"✓";position:absolute;left:2px;top:-3px;color:#F6F1E6;font-size:11px}
+
+/* 时间轴 */
+.tl{position:relative;margin-top:6px}
+.tl::before{content:"";position:absolute;left:19px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.tlitem{position:relative;padding-left:52px;margin-bottom:14px}
+.tlitem .dot{position:absolute;left:11px;top:14px;width:18px;height:18px;border-radius:50%;
+  background:var(--card);border:2px solid var(--grnLine);display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:9px;color:var(--dim)}
+.tlitem.now .dot{background:var(--grn);border-color:var(--grn);color:#F6F1E6}
+.tlitem.past .dot{border-color:var(--line2);color:var(--dim2)}
+.tlitem.past .card{opacity:.66}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+  box-shadow:0 1px 2px rgba(37,51,44,.04)}
+.card.now{border-color:var(--grn);box-shadow:0 2px 10px rgba(31,78,61,.10)}
+.card .ch{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.card .ch b{font-size:15px;color:var(--grn)}
+.card .ch .tag{font-family:var(--mono);font-size:10.5px;border:1px solid var(--line2);border-radius:4px;padding:1px 7px;color:var(--dim2)}
+.card .ch .tag.now{background:var(--grn);border-color:var(--grn);color:#F6F1E6}
+.card .ch .tag.past{background:var(--bg2)}
+.card .ch .wc{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--dim2)}
+.f{margin-top:7px}
+.f .fl{font-size:11.5px;color:var(--clay);font-family:var(--mono);letter-spacing:1px;margin-bottom:2px}
+.f .fv{font-size:13.5px;color:var(--txt)}
+.f .fv.acts{list-style:none;margin:0;padding:0}
+.f .fv.acts li{position:relative;padding-left:22px;margin-bottom:3px}
+.f .fv.acts li::before{content:"→";position:absolute;left:0;color:var(--grn2);font-family:var(--mono)}
+.f .fv.res{color:var(--dim)}
+.f .fv.pit{color:var(--dim)}
+.f .fv.chk{color:var(--grn)}
+.pathbox{margin-top:8px;border:1px dashed var(--line2);border-radius:9px;padding:10px 12px;background:var(--bg2)}
+.pathbox h5{margin:0 0 6px;font-size:12.5px;color:var(--grn);display:flex;align-items:center;gap:8px}
+.pathbox h5 span{font-family:var(--mono);font-size:10px;color:var(--dim2)}
+.pathbox .p{font-size:13px;margin-bottom:4px;padding-left:20px;position:relative}
+.pathbox .p::before{content:"→";position:absolute;left:0;color:var(--grn2);font-family:var(--mono)}
+.pathbox .rk{font-size:12.5px;color:var(--dim);padding-left:20px;position:relative;margin-bottom:2px}
+.pathbox .rk::before{content:"!";position:absolute;left:4px;color:var(--clay);font-family:var(--mono);font-weight:700}
+
+footer{margin-top:40px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim)}
+footer b{color:var(--grn)}
+.empty{color:var(--dim2);font-size:13px;padding:22px 0;text-align:center}
+@media (max-width:640px){
+  .hero h2{font-size:21px}
+  .tl::before{left:15px}
+  .tlitem{padding-left:42px}
+  .tlitem .dot{left:7px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <div class="logo">
+      <h1>四年路线图</h1>
+      <span class="en">STUDENT PATHWAY</span>
+    </div>
+    <div class="sp"></div>
+    <div class="stepbar">
+      <span class="pill" id="pillQ">问卷 0/12</span>
+      <span class="pill" id="pillT">剩余学期 —</span>
+      <span class="pill" id="pillS">主赛道 未选</span>
+    </div>
+  </div>
+  <div class="topbar-progress"><i id="topProg"></i></div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h2>把「我该保研还是就业」拆成 8 个学期、各 3 个能今天就做的动作。</h2>
+    <p>12 道选择题，约 2 分钟。出图后你会拿到：八学期时间轴、四类资产进度、关键节点倒计时与材料清单、同专业匿名分位对标。全部数据只存在你自己的浏览器里。</p>
+    <div class="pledge">
+      <div><b>不制造焦虑</b>：只显示进度与分位数，不做倒计时式恐吓与后果放大，不与他人比分数。</div>
+      <div><b>不替你决策</b>：五条赛道随时切换对照，没有唯一正确答案，只有当前更说得通的一条。</div>
+      <div><b>不出示他人信息</b>：对标只给分位数、样本量与统计口径，不含任何姓名与成绩。</div>
+    </div>
+  </div>
+
+  <!-- 01 问卷 -->
+  <section id="s1">
+    <div class="sec-h"><span class="no">01</span><h3>先告诉我 12 件事</h3><span class="en">INPUT</span></div>
+    <p class="sec-sub">全是单选，凭第一感觉选即可；选错随时改，路线图会跟着重算。</p>
+    <div class="panel">
+      <div class="qgrid" id="quiz"></div>
+      <div class="genbar">
+        <button class="primary" id="btnGen" disabled>生成我的四年路线图</button>
+        <button class="ghost" id="btnClear">清空重填</button>
+        <span class="tip" id="genTip">答完 12 题即可出图（预计 2 分钟内）</span>
+      </div>
+      <div class="note">本题卷不含必答的主观题，也不需要上传成绩单。所有分值用于生成路线图，不离开你的设备。</div>
+    </div>
+  </section>
+
+  <!-- 02 结果 -->
+  <section id="s2">
+    <div class="sec-h"><span class="no">02</span><h3>你的路线图</h3><span class="en">ROADMAP</span></div>
+    <p class="sec-sub">主赛道决定主线任务，可随时切换五条赛道对照；切换不会覆盖你的答案。</p>
+    <div class="panel" id="result">
+      <div class="empty">还没有路线图 —— 答完上面的 12 题，这里会长出 8 张学期卡。</div>
+    </div>
+  </section>
+
+  <footer>
+    <div><b>口径与边界</b>：对标数据为<strong>演示样本</strong>，用于展示分位数的呈现方式，非任何学校或机构的官方统计；正式部署时应替换为经授权的同专业一手数据，并同步更新样本量与采集口径。</div>
+    <div style="margin-top:6px"><b>数据存放</b>：问卷答案与材料清单勾选保存在本机浏览器 localStorage，不上传、不注册、不追踪；换浏览器或清缓存会丢失。</div>
+    <div style="margin-top:6px"><b>使用建议</b>：路线图是「当前更说得通的一条线」，不是承诺。每学期末回来更新一次四类资产，路线会自动重排。</div>
+  </footer>
+
+</div>
+
+<script>
+/* ========================= 数据区 ========================= */
+/*==DATA_JSON_START==*/
+const APP_DATA = {
+  semesters:['大一上','大一下','大二上','大二下','大三上','大三下','大四上','大四下'],
+
+  tracks:{
+    baoyan:{name:'保研',en:'RECOMMEND',desc:'前三年权重最高，核心是把成绩、科研与材料做扎实'},
+    kaoyan:{name:'考研',en:'EXAM',desc:'一次考试决定结果，关键是科目节奏与信息收敛'},
+    liuxue:{name:'留学',en:'ABROAD',desc:'GPA、语言、科研与实践四条线并行，材料周期长'},
+    job:{name:'就业',en:'CAREER',desc:'以岗位 JD 为锚，用经历与作品把简历填满'},
+    startup:{name:'创业',en:'VENTURE',desc:'以真实验证为主，学业与现金流是两条兜底线'}
+  },
+
+  /* 四类资产：目标值按赛道区分，进度条式呈现，不做告警配色 */
+  targets:{
+    baoyan:{gpa:{v:3.70,label:'3.70 / 4.0（多数院校夏令营的常见门槛区间上沿）'},
+            comp:{v:85,label:'国家级或本专业核心赛事奖项'},
+            res:{v:80,label:'在课题组有可写、可讲的具体产出'},
+            intern:{v:45,label:'1 段专业相关实践（非必需，作补充说明）'}},
+    kaoyan:{gpa:{v:3.00,label:'3.00 / 4.0（过线为主，不追求极值）'},
+            comp:{v:35,label:'1 项校级及以上经历，复试能讲即可'},
+            res:{v:35,label:'1 段科研训练或课程项目即可'},
+            intern:{v:30,label:'不强求，备考期不宜分散'} },
+    liuxue:{gpa:{v:3.30,label:'3.30 / 4.0（多数项目的最低加权要求上沿）'},
+            comp:{v:60,label:'1 项与专业相关的省级及以上经历'},
+            res:{v:70,label:'1 段有署名或可量化产出的科研/实践'},
+            intern:{v:60,label:'1 段专业对口的深度实践'}},
+    job:{gpa:{v:3.00,label:'3.00 / 4.0（多数岗位只设底线）'},
+          comp:{v:45,label:'1 项能完整讲清过程与结果的经历'},
+          res:{v:25,label:'非必需，有则加分'},
+          intern:{v:85,label:'2 段以上对口实习，其中 1 段满 3 个月'}},
+    startup:{gpa:{v:2.80,label:'2.80 / 4.0（保住毕业兜底线）'},
+             comp:{v:60,label:'创业类赛事省级及以上，或真实付费验证'},
+             res:{v:35,label:'非必需，技术型项目除外'},
+             intern:{v:70,label:'至少 1 段真实市场/运营一线经历'}}
+  },
+
+  /* 选项分值 */
+  score:{
+    gpa:{'<2.5':2.30,'2.5-3.0':2.78,'3.0-3.3':3.16,'3.3-3.5':3.40,'3.5-3.7':3.60,'>=3.7':3.85,'unk':3.00},
+    gpaLabel:{'<2.5':'低于 2.5','2.5-3.0':'2.5 – 3.0','3.0-3.3':'3.0 – 3.3','3.3-3.5':'3.3 – 3.5','3.5-3.7':'3.5 – 3.7','>=3.7':'3.7 以上','unk':'还不清楚'},
+    comp:{'none':0,'school':35,'prov':60,'nat':85,'intl':100},
+    compLabel:{'none':'暂无','school':'校级','prov':'省级','nat':'国家级','intl':'国际级'},
+    res:{'none':0,'college':25,'uni':45,'sub':70,'pub':90},
+    resLabel:{'none':'暂无','college':'院级项目','uni':'校级大创/课题','sub':'论文或专利在投','pub':'已发表论文/专利'},
+    intern:{'none':0,'unrel':30,'rel1':60,'rel2':85,'campus':20},
+    internLabel:{'none':'暂无','unrel':'1 段非对口','rel1':'1 段对口','rel2':'2 段及以上对口','campus':'仅校内实践'}
+  },
+
+  /* 对标样本量（演示数据，按专业门类） */
+  sample:{工学:2143,理学:986,人文社科:1527,经管:2418,医学:1132,农学:604,艺术:738,其他:512},
+  caliber:'口径：近 3 年同专业在读生匿名自评回填（演示样本，非官方统计）；分位数为组内相对位置，不含任何个人姓名或成绩；每学期更新一次。',
+
+  /* 关键节点（月/日，按当前日期自动取下一次） */
+  nodes:{
+    baoyan:[
+      {name:'夏令营简章集中发布',m:4,d:25,mats:['前五学期成绩单与排名证明','个人陈述 1 版（800 字）','获奖与科研材料扫描件']},
+      {name:'夏令营参营',m:7,d:10,mats:['参营论文或报告定稿','3 分钟自我介绍稿','专业课抽问清单']},
+      {name:'预推免报名',m:9,d:10,mats:['更新至大三结束的排名证明','推荐信（如需要）','志愿梯度清单']},
+      {name:'推免服务系统开放',m:9,d:28,mats:['接收函与待录取确认','学籍校验材料','体检/档案相关提醒']}
+    ],
+    kaoyan:[
+      {name:'招生简章与专业目录发布',m:9,d:15,mats:['目标校考试科目对照表','参考书版本确认','报考点选择']},
+      {name:'网上报名',m:10,d:8,mats:['学籍学历校验','照片与证件照规范','报名信息双人复核']},
+      {name:'网上确认',m:11,d:5,mats:['确认材料上传','报考点公告核对','缴费凭证留存']},
+      {name:'初试',m:12,d:20,mats:['准考证打印','考试用具清单','作息与交通预案']}
+    ],
+    liuxue:[
+      {name:'语言/标化最后刷分窗口',m:9,d:1,mats:['考位与送分时间倒排','目标分与豁免条件核对','成绩单英文版']},
+      {name:'首轮申请截止',m:12,d:1,mats:['CV 与个人陈述定稿','推荐信 3 封（含 1 封备选）','网申信息表']},
+      {name:'常规轮截止',m:1,d:15,mats:['补充材料（实习/论文进展）','面试预约','申请费与豁免']},
+      {name:'录取答复与押金',m:4,d:15,mats:['各校 offer 对比表','押金与退款条款','签证与体检预约']}
+    ],
+    job:[
+      {name:'暑期实习投递高峰',m:4,d:20,mats:['简历 1.0 与投递台账','1 页作品集链接','目标公司清单（15+）']},
+      {name:'秋招提前批',m:7,d:1,mats:['简历 2.0（含实习结果句）','笔试题库排期','内推联系人清单']},
+      {name:'秋招主批开放',m:9,d:1,mats:['投递台账按周更新','面试复盘模板','offer 比较表']},
+      {name:'三方协议签署窗口',m:11,d:15,mats:['岗位/地点/薪酬结构书面确认','违约条款与解约流程','毕业资格自查']}
+    ],
+    startup:[
+      {name:'校级创新大赛申报',m:4,d:1,mats:['一页商业假说与验证记录','团队分工与股权书面约定','MVP 演示（可跑即可）']},
+      {name:'省赛/国赛集训',m:7,d:15,mats:['真实用户与收入数据','12 个月现金流表','路演稿与问答清单']},
+      {name:'校内孵化入驻申报',m:11,d:1,mats:['工商注册或入壳咨询记录','财税代办确认','学业进度自查']},
+      {name:'工商注册与财税启办',m:3,d:1,mats:['经营范围与章程','银行开户与税务报到','社保/档案转接说明']}
+    ]
+  },
+
+  /* 8 张学期卡：前 7 张按赛道区分，第 8 张为三路径收尾卡（全赛道共用） */
+  cards:{
+    baoyan:[
+      {task:'学业基线 + 信息地图：先搞清楚三年怎么算分',
+       acts:['建每周复盘表，把 4 门核心课的平时分拆成可执行的动作','下载培养方案与本院保研细则，标出权重最高的三项','固定一个答疑渠道（助教/直系学长），每周至少提问一次'],
+       res:'教务处培养方案 PDF · 学院保研实施细则 · 课程群答疑时间',
+       pit:'把「大学可以先放松」当成默认设置，期中才第一次看成绩构成',
+       chk:'我能说出每门课的平时分是怎么拿到的吗？'},
+      {task:'GPA 第一波冲刺 + 英语四级',
+       acts:['期末前 6 周做一次样卷自测，只攻最薄弱的两章','留出 6 周窗口通过四级','参加一次院级学术活动，先认脸、不求产出'],
+       res:'往年真题归档 · 四级真题与听力材料 · 学院学术活动日历',
+       pit:'活动报了很多，没有一个能说清自己学到了什么',
+       chk:'本学期 GPA 的变化，我能给出解释吗？'},
+      {task:'专业核心课深度 + 竞赛跑通一遍流程',
+       acts:['选 1 门核心课做延伸阅读，产出 1 页笔记','组队打 1 个与专业相关的竞赛，目标是把流程跑完','报名六级并完成首考'],
+       res:'专业核心课推荐书单 · 校团委竞赛通知汇总 · 六级真题',
+       pit:'一次报三个竞赛，三个都停在初赛',
+       chk:'这次竞赛，我能讲清楚自己具体做了哪一步吗？'},
+      {task:'科研入场 + 把排名算清楚',
+       acts:['联系 1 位专业老师，从文献整理、数据清洗这类基础活做起','把前四学期成绩做一次加权核算，确认自己所在区间','在同一赛事上迭代一次，冲省赛及以上'],
+       res:'院系师资主页 · 校级大创/科研训练通知 · 排名自算表',
+       pit:'找老师只问「有没有项目」，手里没带任何读过的文献',
+       chk:'我在组里能独立完成的最小一项任务是什么？'},
+      {task:'成果沉淀 + 夏令营前置准备',
+       acts:['把课程论文改写成完整版，可作为参营论文','六级刷到目标分（多数夏令营口径 500+），或改用作品集替代','整理材料包 1.0：成绩单、排名证明、获奖、简历'],
+       res:'目标院校往年夏令营通知 · 校定论文模板 · 简历模板',
+       pit:'论文只有题目没有成稿，五份材料四份还在脑子里',
+       chk:'三天之内，我能交出一份完整材料包吗？'},
+      {task:'夏令营 / 预推免主战场',
+       acts:['5 月起按周跟踪通知，梯度申报 6 – 10 所','准备 3 分钟自我介绍与专业课抽问清单，做两次模拟面试','与导师保持双周同步，争取拿到可写的推荐'],
+       res:'目标校研招网 · 学院夏令营公告 · 面试模拟清单',
+       pit:'只投梦校，跳过与当前排名最匹配的那几所',
+       chk:'我的投递清单里，有两所「大概率能去」的学校吗？'},
+      {task:'推免落地 + 毕设与研究生方向对齐',
+       acts:['9 月预推免补投，10 月前确认系统与接收函','毕设选题与研究生方向对齐，提前联系指导教师','把空出来的时间，投到研究生组会的先修知识上'],
+       res:'推免服务系统时间表 · 毕设选题系统 · 目标导师近期论文',
+       pit:'上岸后完全停摆，入学第一个月被先修课追着跑',
+       chk:'我能说出研究生第一学期要用到的三项基础能力吗？'}
+    ],
+    kaoyan:[
+      {task:'学业基线 + 作息打底，先别急着开战线',
+       acts:['建每周复盘表，先保住核心课的出勤与作业节点','下载培养方案，标出考研三门公共课对应的本校课程','固定一项运动或社团，把能长期维持的作息先立起来'],
+       res:'培养方案 PDF · 课程大纲库 · 校体育社团报名页',
+       pit:'一入学先买全套考研资料，三个学期都没翻过',
+       chk:'现在的作息，能支撑连续 8 小时的专注吗？'},
+      {task:'GPA 稳住 + 四级 + 数学地基',
+       acts:['高数/线代做错题本，按章归档一直到期末','留出 6 周窗口通过四级','读 2 本专业入门读物，各写 3 句短评'],
+       res:'错题本模板 · 四级真题 · 图书馆新书通报',
+       pit:'错题只抄不重做，期末突击一次就清零',
+       chk:'本学期数学错题本里，有几道是「二次做错」的？'},
+      {task:'专业核心课 + 六级 + 一次完整竞赛',
+       acts:['选 1 门核心课做延伸阅读，产出 1 页笔记','完整参加一次校级或省级竞赛','完成六级首考，目标 480+'],
+       res:'专业书单 · 竞赛通知汇总 · 六级真题',
+       pit:'把「考研还早」当免责理由，专业课大面积划水',
+       chk:'专业课的分数，撑得起复试时开口吗？'},
+      {task:'明确报考方向 + 英语常态化',
+       acts:['列 6 – 10 个目标专业，逐条对比考试科目与参考书差异','英语改成每周 3 次、每次 30 分钟的固定块','进一个课题组做基础工作，留下一次可写的经历'],
+       res:'研招网专业库 · 目标校招生简章 · 院系师资主页',
+       pit:'只看学校名气，不看考试科目与真题风格',
+       chk:'我能说出两所备选学校的科目差异吗？'},
+      {task:'一轮复习启动 + 信息源收敛',
+       acts:['数学基础轮 + 英语词汇长难句，按周推进（每天 2 – 3 小时）','锁定 2 – 3 所目标校，其中包含 1 所保守校','备好材料包：成绩单、获奖、简历、个人自述草稿'],
+       res:'目标校历年真题 · 招生目录 · 在读学长经验（仅作参考）',
+       pit:'收藏两百篇经验贴，进度一直停在 Day 1',
+       chk:'本周复习时长，是真实累计的吗？'},
+      {task:'强化轮 + 暑期集训',
+       acts:['数学强化与专业课一轮，错题重做率做到 70% 以上','暑假留校或回家二选一，先锁定座位与时段','8 月做一次全真模拟，据此微调院校'],
+       res:'图书馆座位预约 · 真题套卷 · 模考排期表',
+       pit:'一边实习一边备考，两边的投入都只剩一半',
+       chk:'模考离目标差多少？差在哪一块？'},
+      {task:'冲刺 + 报名 + 初试',
+       acts:['10 月网报、11 月确认，逐字核对报考点与照片规范','12 月按真实考试时间做 3 次全真模拟','考前两周只做错题与作息调平'],
+       res:'研招网报名入口 · 报考点公告 · 考前物品清单',
+       pit:'报名信息错一个字，到确认期才发现',
+       chk:'如果某一科发挥失常，我有 B 计划吗？'}
+    ],
+    liuxue:[
+      {task:'先立 GPA 底盘：它在这条线上权重最高',
+       acts:['弄清本校 GPA 算法与重修/刷分规则（对方看的是加权成绩）','每周复盘表，把核心课平时分拆成动作','英语日常输入：每周 3 次、每次 30 分钟原版材料'],
+       res:'教务处成绩管理办法 · 课程大纲 · 校内英语角排期',
+       pit:'以为留学只看语言，前两年把 GPA 拖到 3.0 以下',
+       chk:'我知道重修成绩在成绩单上怎么显示吗？'},
+      {task:'GPA + 四级 + 英语硬投入',
+       acts:['期末前 6 周自测，定位最薄弱的两章','通过四级并同步开始六级词汇','听一次海外交流/线上夏校宣讲，先了解项目类型'],
+       res:'往年真题 · 六级词表 · 国际交流处项目页',
+       pit:'报了夏校才发现与学分、暑研安排冲突',
+       chk:'本学期的成绩曲线，是上升的还是平的？'},
+      {task:'专业深度 + 标化摸底 + 第一次可写经历',
+       acts:['用 1 门核心课的英文教材做对照阅读，积累专业词','做一次雅思/托福模考，摸清分值与短板','完成一次竞赛或校级项目，留下证据'],
+       res:'英文原版教材目录 · 官方模考平台 · 竞赛通知汇总',
+       pit:'一边说「还早」，一边把标化推到大三暑假',
+       chk:'我的英语短板在听、说、读、写的哪一项？'},
+      {task:'科研或实践二选一带证据 + 标化首考',
+       acts:['进组或做一段专业相关实践，目标是可量化产出','完成雅思/托福首考','整理目标国家与专业清单（含学费、时长、认证口径）'],
+       res:'院系师资页/校友内推 · 官方报名入口 · 留服认证说明',
+       pit:'只看排名，不看课程设置与回国认证口径',
+       chk:'这段经历，能写进一页文书吗？'},
+      {task:'标化到位 + 推荐人布局',
+       acts:['标化刷到目标分，多留一次容错考位','与 2 – 3 位授课老师/导师建立可被写出来的长期互动','开 CV 与文书素材库，每条经历按「任务—动作—结果」记'],
+       res:'考位日历 · 导师答疑时间 · 文书素材模板',
+       pit:'临申请前一学期才找推荐人，对方并不了解你',
+       chk:'我能说出三位推荐人各自认识我的哪一面吗？'},
+      {task:'暑研/深度实践 + 选校收敛',
+       acts:['争取一段暑期科研或专业对口的深度实践','定稿选校清单：冲刺、匹配、保底各 2 – 3 所','文书初稿 + 至少一轮外部修改'],
+       res:'校际暑研通知 · 选校表模板 · 写作中心互改小组',
+       pit:'文书交给别人代写，面试一问就穿帮',
+       chk:'每所学校的「为什么选它」，我能说出具体课程或老师吗？'},
+      {task:'递交申请 + 面试 + 并行备选',
+       acts:['分批递交，最早批次常在前一年末，先交先审','准备面试题库并做 3 次模拟，含专业问题的英文回答','同步准备考研或就业作为 Plan B'],
+       res:'各校申请系统 · 面试题库 · 校友面经（仅参考）',
+       pit:'全堆到截止日前三天提交，网申一崩就错过',
+       chk:'如果这一季没有结果，我的下一步是什么？'}
+    ],
+    job:[
+      {task:'认识职业世界 + 学业不塌方',
+       acts:['拆 3 份目标岗位 JD，列出共同的能力项','建每周复盘表，先保住核心课','去旁听一次校园宣讲会，哪怕大四才投'],
+       res:'校就业网/招聘平台 JD · 培养方案 · 职协宣讲日历',
+       pit:'先把简历模板做得好看，内容三年没更新过',
+       chk:'我能说出目标岗位最看重的三项能力吗？'},
+      {task:'通用能力 + 四级 + 第一个可展示的产出',
+       acts:['做一个能对外展示的小作品（课程项目、账号、工具都算）','通过四级，并练一段 1 分钟自我介绍','用一个暑期做兼职或志愿，验证自己对行业的想象'],
+       res:'项目托管平台 · 暑期实践名册 · 志愿平台',
+       pit:'简历上写「参与过」，被问一句细节就答不上来',
+       chk:'陌生人能在 30 秒内看懂我做了什么吗？'},
+      {task:'专业核心课 + 第一段专业相关实践',
+       acts:['完成一次专业相关的兼职、项目或竞赛','用表格记录每段经历的「任务—动作—结果」','锁定 2 – 3 个岗位方向，做 JD 对照'],
+       res:'校友内推社群 · 校内实践基地 · 岗位 JD 库',
+       pit:'实践与方向南辕北辙，简历凑不出一条主线',
+       chk:'这三段经历，能被我串成一个故事吗？'},
+      {task:'补齐硬技能 + 暑期实习申请',
+       acts:['按 JD 补齐 1 – 2 项硬技能（SQL/制图/实验设备等）并做出作品','春季投暑期实习，先投 15 家起','完成一次模拟单面或群面'],
+       res:'校内实训室/公开课 · 暑期实习公告汇总 · 就业中心模拟面试预约',
+       pit:'只投头部公司，暑假结束时仍然零 offer',
+       chk:'我的技能，与目标 JD 只差哪两行？'},
+      {task:'实习深化 + 秋招预演',
+       acts:['做一段 3 个月以上的对口实习，尽量拿到可量化结果','提前批与开放日开始投，先攒面试经验','出简历 2.0 与一页作品集链接'],
+       res:'实习招聘平台 · 提前批公告 · 简历诊断预约',
+       pit:'实习当打杂，走的时候写不出一句结果句',
+       chk:'这段实习，我用哪三个数字能说清？'},
+      {task:'秋招主场 + offer 比较',
+       acts:['集中期大量投递，建立投递台账（岗位/日期/进度）','每场面试后 24 小时内复盘 3 条','收到 offer 按「成长、薪酬、城市、团队」四项打分'],
+       res:'校招日历 · 投递台账模板 · offer 比较表',
+       pit:'只看薪资包，忽略试用期条款与团队流动率',
+       chk:'这个 offer，三年后还能让我学到什么？'},
+      {task:'秋收 + 毕设并行',
+       acts:['签三方前逐条核对岗位、地点、薪酬结构与违约条款','毕设选题尽量与入职岗位相关','把入职前的技能补缺集中在这学期做完'],
+       res:'就业网三方说明 · 毕设选题系统 · 岗位技能清单',
+       pit:'三方签得急，条款与实际口头承诺不一致',
+       chk:'我清楚入职第一年的考核口径吗？'}
+    ],
+    startup:[
+      {task:'学业保底 + 建立痛点观察本',
+       acts:['开一个「校园痛点」观察本，每周记 2 条真实抱怨','保住核心课成绩，别先把退路断掉','以观众身份旁听一次创业沙龙或路演'],
+       res:'校内创客空间开放时间表 · 课程大纲 · 创业协会活动群',
+       pit:'一个月换三个点子，没有一个跟真实用户聊过',
+       chk:'我记下的痛点，当事人真的愿意为它付钱吗？'},
+      {task:'最小验证 + 组队',
+       acts:['把最优痛点做成最小可用版本（问卷、摊位、小程序都行）','访谈 20 个真实用户，重点记录拒绝理由','组队凑齐两类以上角色：技术 / 运营 / 商务'],
+       res:'校创客空间 · 访谈提纲模板 · 跨学科组队群',
+       pit:'团队全是同班同专业，能力结构完全重叠',
+       chk:'20 个人里，有几个愿意留下联系方式？'},
+      {task:'项目成型 + 用赛程倒逼 MVP',
+       acts:['参加互联网+、挑战杯等，用赛程倒逼出 MVP 与数据','拉一份 12 个月现金流小表，哪怕是估算','选修一门财务、法务或统计学课程'],
+       res:'大赛官网 · 简易财务模板 · 通识选修课清单',
+       pit:'为拿奖堆 PPT，赛后项目立刻停摆',
+       chk:'除了奖金，这个项目有过真实收入吗？'},
+      {task:'第一笔收入 + 把规则写下来',
+       acts:['做出第一笔付费（哪怕 500 元），验证支付意愿','把股权、分工、退出机制写成书面约定','完成工商注册或校内孵化入壳咨询'],
+       res:'校孵化器 · 股权协议参考模板（需专业人士审核）· 政务办事入口',
+       pit:'口头分股权，赚钱之后没有凭据',
+       chk:'三个创始人吵架时，按哪份文件解决？'},
+      {task:'规模化尝试 + 学业兜底自查',
+       acts:['选一个渠道做三个月增长实验，记录单位获客成本','核对学分缺口，确认能按期毕业','接触 2 位行业导师或早期投资人，只求反馈不求钱'],
+       res:'校友导师库 · 学分自查表 · 路演日程',
+       pit:'全职投入后学分告急，最后一学期四处补修',
+       chk:'单位获客成本，这三个月下降了吗？'},
+      {task:'自负盈亏还是融资 + 备选方案',
+       acts:['判断未来 12 个月能否自负盈亏，据此决定是否融资','准备 BP 与 6 个月预测（最好/基准/最差三档）','同步写一版求职简历，作为并行备选'],
+       res:'BP 模板 · 早期融资机构清单（仅官方渠道）· 简历模板',
+       pit:'把「融资轮次」当成绩本身，忽略现金流',
+       chk:'最差情况下，这个项目还能撑几个月？'},
+      {task:'毕业与项目双交付',
+       acts:['用毕设做项目复盘或商业计划书，一举两得','提前一学期核对毕业条件：学分、体测、实习要求','明确毕业后角色（全职/转就业/暂缓），并告知家人与队友'],
+       res:'毕设选题系统 · 毕业资格审查清单 · 就业中心咨询',
+       pit:'既不全职也不结课，项目悬着半年没人负责',
+       chk:'毕业后第一个月，我的收入来源是什么？'}
+    ]
+  },
+
+  /* 第 8 张卡 · 大四下：按赛道分别给出三种收尾路径 */
+  card8:{
+    task:'按你选的赛道收尾：三条路径各自成立，没有优劣之分',
+    paths:[
+      {key:'job',title:'就业签约 · 收尾路径',
+       acts:['三月前逐条核对三方条款，重点看岗位、地点、薪酬结构与违约金','用春招最后一次窗口做岗位二次匹配，再决定调整还是按原约入职'],
+       risks:['口头承诺与书面条款不一致：入职后发现岗位职责被更换，缺少维权凭据','签约后完全停摆：入职前的技能补缺被拖到试用期，转正压力陡增']},
+      {key:'grad',title:'读研过渡 · 收尾路径（保研 / 考研 / 留学同用）',
+       acts:['与录取导师确认暑期先修书单与组会安排，别把过渡期整段放空','用毕业设计复现一篇组内论文或方法，把本科成果转成研究生起点'],
+       risks:['过渡期全放空：入学时先修知识断层，第一学期被组会节奏追着跑','手续断点：档案、党团关系、学历认证任一环节漏办，影响入学注册']},
+      {key:'gap',title:'gap 年准备 · 收尾路径',
+       acts:['写下 gap 期的产出目标与预算底线，并说明档案、社保的落处','提前问清下一季申请或招考时间窗，是否需要延期或补充材料'],
+       risks:['只有「休息一年」没有产出：下一季解释成本高，容易被无限延长','身份手续悬空：社保、档案与应届生身份界定不清，影响后续报考落户']}
+    ],
+    res:'学校就业网三方说明 · 导师邮件模板 · 档案与社保转接指南',
+    chk:'我选的这条路，半年后回头看，会有拿得出手的东西吗？'
+  },
+
+  /* 第 8 张卡的赛道默认路径映射 */
+  map8:{baoyan:'grad',kaoyan:'grad',liuxue:'grad',job:'job',startup:'gap'},
+  pathName:{job:'就业签约',grad:'读研过渡',gap:'gap 年准备'}
+};
+/*==DATA_JSON_END==*/
+
+const D = APP_DATA;
+
+/* ========================= 问卷配置 ========================= */
+const QUIZ = [
+  {k:'sem',t:'你现在处在哪个学期？',h:'用于标出「当前所在」与剩余学期数',
+   o:[['1','大一上'],['2','大一下'],['3','大二上'],['4','大二下'],['5','大三上'],['6','大三下'],['7','大四上'],['8','大四下']]},
+  {k:'major',t:'你的专业大致属于哪一类？',h:'决定对标样本的分组',
+   o:[['工学','工学'],['理学','理学'],['人文社科','人文社科'],['经管','经管'],['医学','医学'],['农学','农学'],['艺术','艺术'],['其他','其他']]},
+  {k:'track',t:'目前最想走的主赛道是？',h:'决定八学期的主线任务，之后可随时切换对照',
+   o:[['baoyan','保研'],['kaoyan','考研'],['liuxue','留学'],['job','就业'],['startup','创业']]},
+  {k:'track2',t:'有没有并行考虑的备选赛道？',h:'只作为提示，不会合并进主线',
+   o:[['none','暂不设备选'],['baoyan','保研'],['kaoyan','考研'],['liuxue','留学'],['job','就业'],['startup','创业']]},
+  {k:'gpa',t:'当前 GPA（4 分制）大概在哪一档？',h:'不清楚也没关系，会按保守值估算',
+   o:[['<2.5','<2.5'],['2.5-3.0','2.5–3.0'],['3.0-3.3','3.0–3.3'],['3.3-3.5','3.3–3.5'],['3.5-3.7','3.5–3.7'],['>=3.7','≥3.7'],['unk','还不清楚']]},
+  {k:'rank',t:'专业排名大致在什么位置？',h:'仅用于自检，不进入对标展示',
+   o:[['p5','前 5%'],['p15','5%–15%'],['p30','15%–30%'],['p50','30%–50%'],['p50+','50% 以后'],['unk','不清楚']]},
+  {k:'eng',t:'英语当前到哪一步？',h:'留学赛道权重最高，其余赛道作参考',
+   o:[['cet4n','四级未通过'],['cet4','四级已过'],['cet6l','六级 480 以下'],['cet6h','六级 480 以上'],['ielts','雅思 6.5 / 托福 90 及以上'],['none','还没考过']]},
+  {k:'comp',t:'竞赛经历的最高级别？',h:'没有也正常，路线图会给出起步动作',
+   o:[['none','暂无'],['school','校级'],['prov','省级'],['nat','国家级'],['intl','国际级']]},
+  {k:'res',t:'科研经历到哪一步？',h:'课题、大创、论文、专利都算',
+   o:[['none','暂无'],['college','院级项目'],['uni','校级大创 / 课题'],['sub','论文或专利在投'],['pub','已发表论文 / 专利']]},
+  {k:'intern',t:'实习与实践经历？',h:'校内实践同样计入',
+   o:[['none','暂无'],['unrel','1 段非对口'],['rel1','1 段对口'],['rel2','2 段及以上对口'],['campus','仅校内实践']]},
+  {k:'hours',t:'每周能稳定投入的自修时间？',h:'用来控制每学期动作的数量，不做排名',
+   o:[['h5','5 小时以下'],['h10','5–10 小时'],['h20','10–20 小时'],['h20+','20 小时以上']]},
+  {k:'worry',t:'你最想先解决的一件事是？',h:'决定路线图开头的提醒语',
+   o:[['start','不知道从哪开始'],['time','时间总是不够'],['info','信息太少'],['quit','容易半途而废'],['trade','难以取舍']]}
+];
+
+const WORRY_TIP = {
+  start:'你选的是「不知道从哪开始」：路线图已把第一张卡压缩到 3 个动作，今天挑一个即可。',
+  time:'你选的是「时间不够」：每张卡的动作已按「每周投入」排序，时间紧就先做第 1 条。',
+  info:'你选的是「信息太少」：每张卡都带了入口资源，先收藏资源，再决定动作。',
+  quit:'你选的是「容易半途而废」：每张卡末尾有一个自检问题，学期末回来答一次就够。',
+  trade:'你选的是「难以取舍」：五条赛道可以随时切换对照，取舍不必现在做完。'
+};
+
+/* ========================= 状态 ========================= */
+const STORE='fouryear.roadmap.v1';
+let ans = {};
+let checks = {};
+let gen = false;
+let viewTrack = null;   // 当前查看的赛道（可与问卷主赛道不同）
+let path8 = null;
+
+try{
+  const saved = JSON.parse(localStorage.getItem(STORE)||'{}');
+  ans = saved.ans||{}; checks = saved.checks||{};
+  if(saved.gen) gen = true;
+}catch(e){}
+
+function save(){ try{ localStorage.setItem(STORE, JSON.stringify({ans,checks,gen})); }catch(e){} }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ========================= 问卷渲染 ========================= */
+function renderQuiz(){
+  const box = document.getElementById('quiz');
+  box.innerHTML = QUIZ.map((q,i)=>{
+    const cur = ans[q.k];
+    return '<div class="q"><div class="qt"><i>Q'+(i+1)+'</i>'+esc(q.t)+'</div>'+
+      '<div class="qh">'+esc(q.h)+'</div><div class="opts" data-k="'+q.k+'">'+
+      q.o.map(([v,l])=>'<span class="opt'+(cur===v?' on':'')+'" data-v="'+esc(v)+'">'+esc(l)+'</span>').join('')+
+      '</div></div>';
+  }).join('');
+  box.querySelectorAll('.opts').forEach(g=>{
+    g.addEventListener('click',e=>{
+      const t=e.target.closest('.opt'); if(!t) return;
+      ans[g.dataset.k]=t.dataset.v; save();
+      g.querySelectorAll('.opt').forEach(o=>o.classList.toggle('on',o===t));
+      syncTop(); if(gen) renderResult();
+    });
+  });
+}
+
+function answeredCount(){ return QUIZ.filter(q=>ans[q.k]).length; }
+
+function syncTop(){
+  const n = answeredCount();
+  document.getElementById('pillQ').textContent = '问卷 '+n+'/12';
+  document.getElementById('pillQ').classList.toggle('on', n===12);
+  const sem = ans.sem ? parseInt(ans.sem,10) : 0;
+  document.getElementById('pillT').textContent = sem ? ('剩余学期 '+(9-sem)) : '剩余学期 —';
+  const tr = ans.track ? D.tracks[ans.track].name : '未选';
+  document.getElementById('pillS').textContent = '主赛道 '+tr;
+  document.getElementById('pillS').classList.toggle('on', !!ans.track);
+  document.getElementById('topProg').style.width = (n/12*100)+'%';
+  document.getElementById('btnGen').disabled = n<12;
+  document.getElementById('genTip').textContent = n===12 ? '已答完，可以出图了' : ('还差 '+(12-n)+' 题，预计 2 分钟内完成');
+}
+
+/* ========================= 计算 ========================= */
+function nowVals(){
+  const s = D.score;
+  return {
+    gpa:{v:s.gpa[ans.gpa]!==undefined?s.gpa[ans.gpa]:3.0, label:s.gpaLabel[ans.gpa]||'—', unk:ans.gpa==='unk'},
+    comp:{v:s.comp[ans.comp]!==undefined?s.comp[ans.comp]:0, label:s.compLabel[ans.comp]||'—'},
+    res:{v:s.res[ans.res]!==undefined?s.res[ans.res]:0, label:s.resLabel[ans.res]||'—'},
+    intern:{v:s.intern[ans.intern]!==undefined?s.intern[ans.intern]:0, label:s.internLabel[ans.intern]||'—'}
+  };
+}
+const ASSET_META = [
+  {k:'gpa',name:'GPA',unit:' / 4.0',hint:'加权平均，按各校教务口径'},
+  {k:'comp',name:'竞赛',unit:'',hint:'以最高级别赛事计入'},
+  {k:'res',name:'科研',unit:'',hint:'项目、论文、专利合并计入'},
+  {k:'intern',name:'实习',unit:'',hint:'对口程度 × 时长'}
+];
+
+function pctOf(cur,tar){ return Math.max(0,Math.min(100,Math.round(cur/Math.max(tar,0.01)*100))); }
+
+/* 分位数：logistic 单调映射，只用演示样本的分位展示 */
+function percentile(score){
+  const p = 100/(1+Math.exp(-(score-52)/15));
+  return Math.max(2, Math.min(98, Math.round(p/5)*5));
+}
+
+function nextDate(m,d){
+  const now = new Date();
+  const today = new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  let t = new Date(now.getFullYear(),m-1,d);
+  if(t < today) t = new Date(now.getFullYear()+1,m-1,d);
+  return t;
+}
+function daysTo(d){
+  const now = new Date();
+  const today = new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  return Math.round((d-today)/86400000);
+}
+function fmtDate(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+
+/* ========================= 结果渲染 ========================= */
+function renderResult(){
+  if(!gen) return;
+  const track = viewTrack || ans.track;
+  const T = D.tracks[track];
+  const tg = D.targets[track];
+  const cur = nowVals();
+  const semIdx = parseInt(ans.sem,10)||1;
+  if(!path8) path8 = D.map8[track] || 'grad';
+
+  /* --- 头部 --- */
+  const alt = (ans.track2 && ans.track2!=='none') ? D.tracks[ans.track2].name : null;
+  let html = '<div class="res-head">'+
+    '<span class="trackchip">'+esc(T.name)+' · 主线</span>'+
+    (alt?'<span class="trackchip alt">并行参考：'+esc(alt)+'</span>':'<span class="trackchip alt">未设备选赛道</span>')+
+    '<span class="pill">当前 '+esc(D.semesters[semIdx-1])+'</span>'+
+    '<span class="pill">剩余 '+(9-semIdx)+' 个学期</span>'+
+    '<span class="sp" style="flex:1"></span>'+
+    '<button class="sm ghost" id="btnExport">导出 Markdown</button></div>'+
+    '<div class="note" style="margin:0 0 14px">'+esc(T.desc)+'。这张路线图按你此刻的选择展开，'+
+    '<b>不代表唯一正确的赛道</b>，下面五条主线可以随时切换对照。</div>'+
+    '<div class="switch">'+Object.keys(D.tracks).map(k=>
+      '<button class="sm'+(k===track?' primary':' ghost')+'" data-tk="'+k+'">'+esc(D.tracks[k].name)+'</button>').join('')+
+    '</div>'+
+    (WORRY_TIP[ans.worry]?'<div class="note">'+esc(WORRY_TIP[ans.worry])+'</div>':'');
+
+  /* --- 资产仪表盘 --- */
+  html += '<div style="margin-top:20px" class="sec-h"><span class="no">02-1</span><h3>四类资产：现在到哪儿了</h3><span class="en">ASSETS</span></div>'+
+    '<p class="sec-sub">进度条只表达「已走完多少」，不做红黄绿告警；灰色刻度线表示本赛道的目标位置。</p>'+
+    '<div class="assetgrid">'+
+    ASSET_META.map(m=>{
+      const c=cur[m.k], t=tg[m.k], p=pctOf(c.v,t.v);
+      const done = p>=100;
+      const gapTxt = done ? '已到达目标区间' : ('还差 '+ (m.k==='gpa' ? (Math.max(0,(t.v-c.v)).toFixed(2)) : (t.v-c.v)) + (m.k==='gpa'?' 分':' 分（100 分制）'));
+      return '<div class="asset"><div class="an">'+esc(m.name)+'<small>'+esc(m.hint)+'</small></div>'+
+        '<div class="bar"><i style="width:'+p+'%"></i><em></em></div>'+
+        '<div class="av"><span>当前 <b>'+esc(m.k==='gpa'?c.v.toFixed(2)+m.unit+(c.unk?'（保守估计）':''):c.label)+'</b></span>'+
+        '<span>已走完 <b>'+p+'%</b></span></div>'+
+        '<div class="av" style="margin-top:4px"><span>目标 '+esc(m.k==='gpa'?t.v.toFixed(2)+m.unit:t.label)+'</span>'+
+        '<span>'+esc(gapTxt)+'</span></div></div>';
+    }).join('')+
+    '</div>';
+
+  /* --- 对标 --- */
+  const composite = 0.40*(cur.gpa.v/4*100) + 0.20*cur.comp.v + 0.20*cur.res.v + 0.20*cur.intern.v;
+  const P = percentile(composite);
+  const n = D.sample[ans.major] || 512;
+  const front = P>=50 ? ('前 '+(100-P)+'%') : ('后 '+P+'%');
+  html += '<div style="margin-top:22px" class="sec-h"><span class="no">02-2</span><h3>同专业匿名对标</h3><span class="en">BENCHMARK</span></div>'+
+    '<p class="sec-sub">只显示你在同专业样本中的相对位置（分位数），不显示任何个人姓名、学号或具体成绩。</p>'+
+    '<div class="bench"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:13px">'+
+      '<span>专业分组：<b>'+esc(ans.major)+'</b>　样本量 <span class="mono">n = '+n+'</span></span>'+
+      '<span>你的综合位置：<b style="color:var(--grn);font-size:15px">P'+P+'</b>（约处于'+front+'）</span></div>'+
+    '<div class="scale"><div class="track"></div><div class="fill" style="width:'+P+'%"></div>'+
+      '<div class="pin" style="left:'+P+'%"><b>P'+P+'</b><span>你</span></div></div>'+
+    '<div class="ticks"><span>P0</span><span>P25</span><span>P50</span><span>P75</span><span>P100</span></div>'+
+    '<div class="caliber">'+esc(D.caliber)+'</div>'+
+    '<div style="font-size:12px;color:var(--dim);margin-top:8px">分位构成：GPA 40% · 竞赛 20% · 科研 20% · 实习 20%（自评回填，权重可在设置中调整）。</div>'+
+    '</div>';
+
+  /* --- 节点倒计时 --- */
+  const list = (D.nodes[track]||[]).map(x=>{
+    const d = nextDate(x.m,x.d); return Object.assign({},x,{date:d,dd:daysTo(d)});
+  }).sort((a,b)=>a.dd-b.dd);
+  html += '<div style="margin-top:22px" class="sec-h"><span class="no">02-3</span><h3>关键节点倒计时与材料清单</h3><span class="en">MILESTONES</span></div>'+
+    '<p class="sec-sub">日期按今年/次年自动推算，勾选状态存在本机；材料清单是「要准备什么」，不是「还差多少」。</p>'+
+    '<div class="nodes">'+list.map((x,i)=>{
+      const key = track+'|'+x.name;
+      const arr = checks[key]||[];
+      return '<div class="node"><div class="nd"><b>'+esc(x.name)+'</b>'+
+        '<span class="cd">'+x.dd+'<span> 天</span></span></div>'+
+        '<div class="dt">'+fmtDate(x.date)+'</div>'+
+        '<ul class="mats">'+x.mats.map((m,j)=>
+          '<li class="'+(arr[j]?'done':'')+'" data-k="'+esc(key)+'" data-j="'+j+'"><span class="box"></span><span>'+esc(m)+'</span></li>').join('')+
+        '</ul></div>';
+    }).join('')+'</div>';
+
+  /* --- 八学期时间轴 --- */
+  html += '<div style="margin-top:24px" class="sec-h"><span class="no">02-4</span><h3>八学期路线图</h3><span class="en">TIMELINE</span></div>'+
+    '<p class="sec-sub">每学期不超过 3 个关键动作，每个动作都带入口资源；已经过去的学期作为回顾位保留。</p>'+
+    '<div class="tl">';
+  for(let i=0;i<8;i++){
+    const isNow = (i+1)===semIdx, isPast = (i+1)<semIdx;
+    let body;
+    if(i<7){
+      const c = D.cards[track][i];
+      const words = (c.task+c.acts.join('')+c.res+c.pit+c.chk).length;
+      body =
+        '<div class="f"><div class="fl">主线任务</div><div class="fv">'+esc(c.task)+'</div></div>'+
+        '<div class="f"><div class="fl">关键动作 · '+c.acts.length+' 条</div><ul class="fv acts">'+
+          c.acts.map(a=>'<li>'+esc(a)+'</li>').join('')+'</ul></div>'+
+        '<div class="f"><div class="fl">所需资源 / 入口</div><div class="fv res">'+esc(c.res)+'</div></div>'+
+        '<div class="f"><div class="fl">常见坑</div><div class="fv pit">'+esc(c.pit)+'</div></div>'+
+        '<div class="f"><div class="fl">自检问题</div><div class="fv chk">'+esc(c.chk)+'</div></div>'+
+        '<div class="wc" style="text-align:right;font-family:var(--mono);font-size:10.5px;color:var(--dim2);margin-top:6px">本卡 '+words+' 字（上限 200）</div>';
+    }else{
+      const c8 = D.card8;
+      const p = c8.paths.find(x=>x.key===path8) || c8.paths[0];
+      const words = (c8.task+p.acts.join('')+p.risks.join('')+c8.res+c8.chk).length;
+      body =
+        '<div class="f"><div class="fl">主线任务</div><div class="fv">'+esc(c8.task)+'</div></div>'+
+        '<div class="f"><div class="fl">三条收尾路径 · 当前展开：'+esc(p.title)+'</div>'+
+          '<div class="pathbox"><h5>'+esc(p.title)+'<span>按赛道自动展开，可切换</span></h5>'+
+          p.acts.map(a=>'<div class="p">'+esc(a)+'</div>').join('')+
+          '<div style="height:6px"></div>'+
+          p.risks.map(r=>'<div class="rk">'+esc(r)+'</div>').join('')+
+          '</div></div>'+
+        '<div class="switch" style="margin-top:8px">'+c8.paths.map(x=>
+          '<button class="sm '+(x.key===path8?'primary':'ghost')+'" data-p8="'+x.key+'">'+esc(x.title.split(' · ')[0])+'</button>').join('')+'</div>'+
+        '<div class="f"><div class="fl">所需资源 / 入口</div><div class="fv res">'+esc(c8.res)+'</div></div>'+
+        '<div class="f"><div class="fl">自检问题</div><div class="fv chk">'+esc(c8.chk)+'</div></div>'+
+        '<div class="wc" style="text-align:right;font-family:var(--mono);font-size:10.5px;color:var(--dim2);margin-top:6px">本卡 '+words+' 字（上限 200）</div>';
+    }
+    html += '<div class="tlitem '+(isNow?'now':(isPast?'past':''))+'"><div class="dot">'+(i+1)+'</div>'+
+      '<div class="card '+(isNow?'now':'')+'"><div class="ch"><b>'+esc(D.semesters[i])+'</b>'+
+      '<span class="tag '+(isNow?'now':(isPast?'past':''))+'">'+(isNow?'当前学期':(isPast?'回顾':'未开始'))+'</span>'+
+      '</div>'+body+'</div></div>';
+  }
+  html += '</div>';
+
+  document.getElementById('result').innerHTML = html;
+
+  /* 事件 */
+  document.getElementById('result').querySelectorAll('[data-tk]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      viewTrack = b.dataset.tk;
+      if(viewTrack!==ans.track) path8 = D.map8[viewTrack]||'grad'; else path8 = D.map8[ans.track]||'grad';
+      renderResult();
+    });
+  });
+  document.getElementById('result').querySelectorAll('[data-p8]').forEach(b=>{
+    b.addEventListener('click',()=>{ path8 = b.dataset.p8; renderResult(); });
+  });
+  document.getElementById('result').querySelectorAll('.mats li').forEach(li=>{
+    li.addEventListener('click',()=>{
+      const k=li.dataset.k, j=parseInt(li.dataset.j,10);
+      checks[k]=checks[k]||[]; checks[k][j]=!checks[k][j]; save();
+      li.classList.toggle('done', !!checks[k][j]);
+    });
+  });
+  const be = document.getElementById('btnExport');
+  if(be) be.addEventListener('click',()=>exportMd(track));
+}
+
+/* ========================= 导出 ========================= */
+function exportMd(track){
+  const T=D.tracks[track];
+  let md = '# 四年路线图 · '+T.name+'主线\n\n';
+  md += '- 当前学期：'+D.semesters[(parseInt(ans.sem,10)||1)-1]+'\n';
+  md += '- 备选赛道：'+((ans.track2&&ans.track2!=='none')?D.tracks[ans.track2].name:'未设')+'\n';
+  md += '- 对标：专业 '+ans.major+'，样本 n='+(D.sample[ans.major]||512)+'\n\n';
+  md += '| 学期 | 主线任务 | 关键动作 | 所需资源/入口 | 常见坑 | 自检问题 |\n|---|---|---|---|---|---|\n';
+  for(let i=0;i<7;i++){
+    const c=D.cards[track][i];
+    md += '| '+D.semesters[i]+' | '+c.task+' | '+c.acts.join('；')+' | '+c.res+' | '+c.pit+' | '+c.chk+' |\n';
+  }
+  const c8=D.card8, p=c8.paths.find(x=>x.key===path8)||c8.paths[0];
+  md += '| 大四下 | '+c8.task+' | 【'+p.title+'】'+p.acts.join('；')+'｜风险：'+p.risks.join('；')+' | '+c8.res+' | — | '+c8.chk+' |\n';
+  md += '\n> 三种收尾路径：'+c8.paths.map(x=>x.title).join(' / ')+'，无优劣之分。\n';
+  const blob = new Blob([md],{type:'text/markdown;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '四年路线图_'+T.name+'.md';
+  a.click(); URL.revokeObjectURL(a.href);
+}
+
+/* ========================= 启动 ========================= */
+document.getElementById('btnGen').addEventListener('click',()=>{
+  gen = true; viewTrack = ans.track; path8 = D.map8[ans.track]||'grad'; save();
+  renderResult();
+  const s2 = document.getElementById('s2');
+  if(s2 && s2.scrollIntoView) s2.scrollIntoView({behavior:'smooth'});
+});
+document.getElementById('btnClear').addEventListener('click',()=>{
+  ans={}; checks={}; gen=false; viewTrack=null; path8=null; save();
+  renderQuiz(); syncTop();
+  document.getElementById('result').innerHTML='<div class="empty">还没有路线图 —— 答完上面的 12 题，这里会长出 8 张学期卡。</div>';
+});
+
+renderQuiz(); syncTop();
+if(gen && answeredCount()===12){ viewTrack = ans.track; renderResult(); }
+</script>
+</body>
+</html>
